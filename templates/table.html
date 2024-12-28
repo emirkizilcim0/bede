@@ -1,0 +1,218 @@
+{% extends 'base.html' %}
+
+{% block title %}BEDE - Forecast Table{% endblock %}
+
+{% block content %}
+    <div class="container mt-5">
+        <!-- Title Section -->
+        <div class="row mb-4">
+            <div class="col-12 text-center">
+                <h1 class="display-4 text-primary">Forecasted Sales Results</h1>
+                <p class="lead text-muted">View the generated sales forecast and download the files.</p>
+            </div>
+        </div>
+
+        <!-- Graph Section -->
+        <div class="row mb-5">
+            <div class="col-12 text-center">
+                {% if plot_image %}
+                    <img src="{{ url_for('static', filename=plot_image) }}" 
+                         alt="Forecast Graph" class="img-fluid rounded shadow-sm forecast-graph">
+                {% else %}
+                    <p class="text-danger">No graph available. Please upload files first.</p>
+                {% endif %}
+            </div>
+        </div>
+
+        <!-- Download Section -->
+        <div class="row mb-5">
+            <div class="col-12">
+                <h3 class="h4 text-secondary mb-3">Download All Forecasted Data Files</h3>
+                {% if forecasted_files %}
+                    <div class="d-flex flex-wrap justify-content-center">
+                        <!-- Single button for downloading all files -->
+                        <a href="{{ url_for('download_all_forecasted_files') }}" 
+                           class="btn btn-outline-success btn-lg shadow-sm download-button">
+                            Download All Files
+                        </a>
+                    </div>
+                {% else %}
+                    <p class="text-muted">No forecasted data files available. Please upload files to generate forecasts.</p>
+                {% endif %}
+            </div>
+        </div>
+
+        <!-- Upload More Files -->
+        <div class="row mt-4">
+            <div class="col-12 text-center">
+                <a href="{{ url_for('FormElements') }}" class="btn btn-primary btn-lg shadow-sm upload-btn">
+                    Upload More Files
+                </a>
+            </div>
+        </div>
+
+        <!-- Time Series Data Section -->
+        <div class="col-md-4">
+            <h3 class="h5 text-secondary">Time Series Data</h3>
+            {% if time_series_data %}
+                <table class="table table-sm table-bordered">
+                    <thead>
+                        <tr>
+                            {% for col in time_series_data[0].keys() %}
+                                <th>{{ col }}</th>
+                            {% endfor %}
+                        </tr>
+                    </thead>
+                    <tbody>
+                        {% for row in time_series_data %}
+                            <tr>
+                                {% for value in row.values() %}
+                                    <td>{{ value }}</td>
+                                {% endfor %}
+                            </tr>
+                        {% endfor %}
+                    </tbody>
+                </table>
+            {% else %}
+                <p class="text-muted">No time series data available.</p>
+            {% endif %}
+        </div>
+    </div>
+
+    <!-- Custom CSS -->
+    <style>
+
+    .forecast-graph {
+        max-width: 100%;
+        border: 3px solid #ddd;
+        border-radius: 10px;
+        box-shadow: 0 2px 10px rgba(0, 0, 0, 0.1);
+        margin-bottom: 20px;
+    }
+
+    .table {
+        font-size: 0.9rem;
+        margin-top: 10px;
+    }
+
+    .table th {
+        text-align: center;
+        background-color: #f8f9fa;
+    }
+
+    .table td {
+        text-align: center;
+    }
+        /* Custom styles for the page */
+        body {
+            font-family: 'Arial', sans-serif;
+            background-color: #f8f9fa;
+            color: #343a40;
+        }
+
+        .container {
+            max-width: 1200px;
+        }
+
+        .display-4 {
+            font-size: 3rem;
+            font-weight: 600;
+        }
+
+        .text-muted {
+            font-size: 1.25rem;
+        }
+
+        .forecast-graph {
+            max-width: 80%;
+            border: 5px solid #ddd;
+            border-radius: 10px;
+            box-shadow: 0 2px 10px rgba(0, 0, 0, 0.1);
+            margin-top: 20px;
+        }
+
+        .btn {
+            transition: all 0.3s ease;
+        }
+
+        .btn:hover {
+            transform: translateY(-3px);
+            box-shadow: 0 10px 30px rgba(0, 0, 0, 0.1);
+        }
+
+        .download-button {
+            background-color: #28a745;
+            border-color: #28a745;
+            color: white;
+        }
+
+        .download-button:hover {
+            background-color: #218838;
+            border-color: #1e7e34;
+        }
+
+        .upload-btn {
+            background-color: #007bff;
+            border-color: #007bff;
+            color: white;
+        }
+
+        .upload-btn:hover {
+            background-color: #0056b3;
+            border-color: #004085;
+        }
+
+        .text-center {
+            text-align: center;
+        }
+
+        .row {
+            margin-bottom: 30px;
+        }
+
+        .lead {
+            font-size: 1.25rem;
+            color: #6c757d;
+        }
+
+        .h4 {
+            font-size: 1.5rem;
+            font-weight: 500;
+        }
+
+        .shadow-sm {
+            box-shadow: 0 1px 3px rgba(0, 0, 0, 0.1);
+        }
+
+        .container mt-5 {
+            margin-top: 50px;
+        }
+
+        .text-danger {
+            font-size: 1.2rem;
+            color: #dc3545;
+        }
+
+        .text-secondary {
+            color: #6c757d;
+        }
+
+        /* Responsive design adjustments */
+        @media (max-width: 768px) {
+            .display-4 {
+                font-size: 2.5rem;
+            }
+
+            .forecast-graph {
+                max-width: 100%;
+                margin-top: 20px;
+            }
+
+            .btn-lg {
+                font-size: 1rem;
+                padding: 12px 20px;
+            }
+        }
+    </style>
+
+{% endblock %}

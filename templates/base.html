@@ -1,0 +1,81 @@
+<!-- templates/base.html -->
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>{% block title %}BEDE{% endblock %}</title>
+    <link rel="stylesheet" href="/static/css/styles.css">
+</head>
+<body>
+
+    <!-- Header -->
+    <header class="header">
+        <div class="logo">
+            <!-- You can add your logo or other content here -->
+            <img src="/static/assets/arasaka_icon.png" alt="Logo" class="logo-img">
+            <span class="logo-name">AraSaka</span>
+        </div>
+        <div class="header-right">
+            {% if user_info %}
+                <!-- Normal login (email/password) -->
+                <img src="{{ user_info.picture }}" alt="Profile Picture" class="profile-img">
+                <span class="username">{{ user_info.name }}</span>
+                <a href="{{ url_for('logout') }}" class="top-btn">Logout</a>
+            {% elif session.get('credentials') %}
+                <!-- Google login -->
+                <img src="{{ user_info.picture }}" alt="Profile Picture" class="profile-img">
+                <span class="username">{{ user_info.name }}</span>
+                <a href="{{ url_for('logout') }}" class="top-btn">Logout</a>
+            {% else %}
+                <!-- Not logged in -->
+                <a href="{{ url_for('home') }}" class="top-btn">Login</a>
+            {% endif %}
+        </div>
+    </header>
+    
+    {% if user_info %}
+    <!-- Sidebar remains fixed -->
+    <nav class="sidebar">
+        <!-- Main Section -->
+        <div class="sidebar-section">
+            <h3 class="sidebar-category-title">NAVIGATION</h3>
+            <ul>
+                <li><a href="{{ url_for('Dashboard') }}" class="sidebar-button">Dashboard</a></li>
+            </ul>
+        </div>
+
+        <div class="sidebar-section">
+            <h3 class="sidebar-category-title">FORMS & TABLE</h3>
+            <ul>
+                <li><a href="{{ url_for('FormElements') }}" class="sidebar-button">Form Elements</a></li>
+                <li><a href="{{ url_for('Table') }}" class="sidebar-button">Table</a></li>
+            </ul>
+        </div>
+        
+        <!-- Secondary Section -->
+        <div class="sidebar-section">
+            <h3 class="sidebar-category-title">OTHER</h3>
+            <ul>
+                <li><a href="{{ url_for('Settings') }}" class="sidebar-button">Settings</a></li>
+            </ul>
+        </div>
+    </nav>
+    {% endif %}
+
+    <!-- Main Content Area -->
+    <div class="main-container">
+        <section class="content">
+            {% block content %}
+            <!-- Dynamic content will be injected here -->
+            {% endblock %}
+        </section>
+    </div>
+
+    <!-- Footer -->
+    <footer>
+        <p>&copy;2024 AraSaka. BEDE</p>
+    </footer>
+
+</body>
+</html>

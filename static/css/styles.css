@@ -1,0 +1,314 @@
+/* Basic resets */
+* {
+    margin: 0;
+    padding: 0;
+    box-sizing: border-box;
+}
+
+body {  
+    font-family: Arial, sans-serif;
+    background-color: #f5f5f5;
+    display: flex;
+    flex-direction: column;
+    min-height: 100vh;
+    padding-top: 80px; /* Prevent content from being hidden behind the fixed header */
+}
+
+/* Header Layout */
+.header {
+    position: fixed;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 80px; /* Height of the header */
+    background-color: #34495e;
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    padding: 0 20px;
+    z-index: 1000; /* Keeps header on top */
+}
+
+/* Styling for the right section of the header */
+.header-right {
+    display: flex;
+    align-items: center; /* Vertically center the username and button */
+    gap: 10px; /* Space between the username and the profile button */
+}
+
+/* Styling for the Username */
+.username {
+    font-size: 16px;
+    color: white; /* Adjust the color as needed */
+    font-weight: bold;
+}
+
+/* Styling for the Profile button */
+#profile-btn {
+    background-color: #2c3e50;
+    color: white;
+    padding: 10px 15px;
+    border-radius: 5px;
+    text-decoration: none;
+    transition: background-color 0.3s ease;
+}
+
+#profile-btn:hover {
+    background-color: #2c3e50;
+}
+
+/* Logo Container */
+.logo-container {
+    display: flex;
+    align-items: center;
+}
+
+/* Styling for the Logo */
+.logo {
+    display: flex; /* Ensures logo and name are next to each other */
+    align-items: center;
+    font-size: 24px;
+    font-weight: bold;
+}
+
+.logo-img {
+    max-width: 40px; /* Make sure the logo is responsive */
+    max-height: 40px; /* Make sure the logo is responsive */
+    object-fit: contain; /* Ensure the image fits inside the logo box without distortion */
+    margin-right: 10px; /* Space between logo image and name */
+}
+
+.logo-name {
+    font-size: 24px; /* Font size for the site name */
+    color: black;
+}
+
+
+
+/* If buttons are inside a list, remove bullet points */
+.top-btn ul {
+    list-style-type: none; /* Remove bullet points */
+    padding: 0;
+    margin: 0;
+}
+
+/* Ensure links within buttons have no underline */
+.top-btn a {
+    text-decoration: none;
+}
+
+/* Styling for the "Contact" and "About" buttons */
+.top-btn {
+    background-color: transparent; /* Transparent background */
+    color: #bdc3c7; /* Light gray color */
+    padding: 12px 20px; /* Increased padding to make buttons bigger */
+    border-radius: 8px; /* Rounded corners */
+    text-decoration: none;
+    transition: background-color 0.3s ease, transform 0.2s ease;
+    font-size: 18px; /* Increased font size */
+    font-weight: normal;
+    border: none; /* Remove border */
+    outline: none; /* Remove outline on focus */
+}
+
+/* Remove outline on focus */
+.top-btn:focus {
+    outline: none;
+}
+
+/* Hover effect for "Contact" and "About" buttons */
+.top-btn:hover {
+    background-color: #2c3e50; /* Subtle hover effect */
+    color: white; /* Text color change on hover */
+    transform: scale(1.05); /* Slight scaling effect */
+}
+
+/* Styling for the Profile button */
+#profile-btn {
+    background-color: #2c3e50;
+    color: white;
+    padding: 0; /* Remove padding to maintain the button size */
+    border-radius: 50%; /* Make the button fully round */
+    text-decoration: none;
+    transition: background-color 0.3s ease, transform 0.2s ease;
+    width: 50px; /* Adjust button size */
+    height: 50px; /* Ensure button is square and circular */
+    display: flex;
+    justify-content: center; /* Center the image inside the button */
+    align-items: center; /* Vertically center the image inside the button */
+}
+
+
+/* Styling for the Profile image inside the button */
+.profile-img {
+    width: 28px; /* Ensure the image takes up full width of the button */
+    height: 28px; /* Ensure the image takes up full height of the button */
+    object-fit: cover; /* Ensure the image covers the area without distortion */
+    border-radius: 50%; /* Ensure the image is circular */
+    max-width: 30px; /* Restrict max width to prevent the image from growing too large */
+    max-height: 30px; /* Restrict max height to prevent the image from growing too large */
+}
+
+/* Hover effect for the Profile button */
+#profile-btn:hover {
+    background-color: #2c3e50; /* Change background color on hover */
+    transform: scale(1.05); /* Slightly increase the size when hovered */
+}
+
+/* Sidebar Layout */
+.sidebar {
+    position: fixed;
+    top: 80px; /* Push sidebar below the header */
+    left: 0;
+    width: 250px;
+    height: calc(100vh - 80px); /* Full viewport height minus the header height */
+    background-color: #2c3e50;
+    color: white;
+    padding: 20px;
+    display: flex;
+    flex-direction: column;
+    justify-content: flex-start;
+    z-index: 999; /* Keeps sidebar below the header */
+}
+
+/* Sidebar Section and Category Styling */
+.sidebar-section {
+    margin-bottom: 20px;
+}
+
+.sidebar-category-title {
+    font-size: 18px;
+    font-weight: bold;
+    color: #bdc3c7;
+    margin-bottom: 10px;
+}
+
+/* Sidebar List */
+.sidebar ul {
+    list-style: none;
+    padding-left: 0;
+    margin: 0;
+}
+
+.sidebar ul li {
+    margin-bottom: 15px;
+}
+
+/* Sidebar Button Styling */
+.sidebar-button {
+    width: 100%;
+    padding: 15px;
+    font-size: 16px;
+    text-align: left;
+    background-color: #34495e;
+    color: white;
+    border: none;
+    border-radius: 5px;
+    cursor: pointer;
+    transition: background-color 0.3s ease, transform 0.3s ease;
+    text-decoration: none; /* Removes the underline */
+    display: block; /* Makes the button span the full width */
+}
+
+/* Sidebar Button Hover Effect */
+.sidebar-button:hover {
+    background-color: #2c3e50;
+    transform: translateX(10px);
+    text-decoration: none; /* Ensure no underline on hover */
+}
+
+/* Main Content */
+.main-container {
+    display: flex;
+    flex: 1;
+    margin-top: 100px; /* Adds space for fixed header */
+    margin-left: 250px; /* Adds space for fixed sidebar */
+    justify-content: center;
+    align-items: center;
+    height: calc(100vh - 100px); /* Full height minus header and sidebar */
+    padding: 20px;
+}
+
+.content {
+    background-color: #f5f5f5;
+    padding: 20px;
+    width: 80%;
+}
+
+footer {
+    background-color: #333;
+    color: white;
+    text-align: center;
+    padding: 10px;
+    position: fixed;
+    bottom: 0;
+    width: 100%;
+    z-index: 1000; /* Keeps the footer on top */
+}
+
+footer:hover {
+    background-color: #444; /* Slight change in footer background on hover */
+    transform: scale(1.02); /* Subtle scale effect */
+}
+
+/* Form styling */
+.upload-container {
+    margin: 20px auto;
+    padding: 20px;
+    max-width: 600px;
+    background: #f9f9f9;
+    border: 1px solid #ddd;
+    border-radius: 8px;
+    box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+}
+
+.page-title {
+    font-size: 24px;
+    font-weight: bold;
+    margin-bottom: 15px;
+    color: #333;
+}
+
+.file-label {
+    display: block;
+    margin-bottom: 10px;
+    font-size: 16px;
+    color: #555;
+}
+
+.file-input {
+    display: block;
+    width: 100%;
+    padding: 8px;
+    margin-bottom: 15px;
+    border: 1px solid #ccc;
+    border-radius: 4px;
+}
+
+.upload-btn {
+    display: inline-block;
+    padding: 10px 20px;
+    font-size: 16px;
+    color: #fff;
+    background-color: #007bff;
+    border: none;
+    border-radius: 4px;
+    cursor: pointer;
+    text-align: center;
+}
+
+.upload-btn:hover {
+    background-color: #0056b3;
+}
+
+.success-message {
+    color: green;
+    font-size: 16px;
+    margin-top: 10px;
+}
+
+.error-message {
+    color: red;
+    font-size: 16px;
+    margin-top: 10px;
+}
