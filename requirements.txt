@@ -1,0 +1,14 @@
+Flask==2.2.5
+Flask-SQLAlchemy==2.5.1
+mysql-connector-python==8.0.33
+SQLAlchemy==1.4.47
+Werkzeug==2.2.3
+pandas==1.5.3
+matplotlib==3.7.1
+pmdarima==2.0.3
+sktime==0.14.1
+scikit-learn==1.2.2
+Google-Auth==2.20.0
+Google-Auth-OAuthlib==1.0.0
+Google-Auth-Transport-Requests==2.0.0
+numpy==1.26.4

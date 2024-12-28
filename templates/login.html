@@ -127,14 +127,10 @@
 
             <div class="login-subtitle">OR</div>
 
-            <a href="/login/user">
-                <button class="login-button">Login as Normal User</button>
+            <!-- Google Login Button -->
+            <a href="{{ url_for('google_login') }}">
+                <button class="login-button">Login with Google</button>
             </a>
-            <br>
-            <a href="/login/admin">
-                <button class="login-button">Login as Admin</button>
-            </a>
-            <br>
 
             <!-- Register button -->
             <div class="login-subtitle">You don't have an account?</div>

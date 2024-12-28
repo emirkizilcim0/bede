@@ -412,7 +412,7 @@ def register():
 
 
 
-@app.route('/login/google')
+@app.route('/login/user')
 def login():
     # Check if the user is already logged in via email/password
     if "user_info" in session:
@@ -455,7 +455,7 @@ def login_user():
         }
 
         flash("Login successful!")
-        return redirect(url_for('Dashboard'))
+        return redirect(url_for('profile'))
         
     except Error as e:
         flash(f"An error occurred: {str(e)}")
@@ -467,7 +467,10 @@ def login_user():
             connection.close()
 
 @app.route("/login/user")
-def profile_user():
+def google_login():
+    # Default user_info to None
+    user_info = None
+
     # Check if the user is logged in via normal email/password or Google OAuth
     if "user_info" not in session and "credentials" not in session:
         return redirect(url_for("login"))  # Redirect to login if not logged in
@@ -475,7 +478,7 @@ def profile_user():
     # If logged in via email/password
     if "user_info" in session:
         user_info = session["user_info"]
-    
+
     # If logged in via Google OAuth
     elif "credentials" in session:
         credentials = Credentials(**session["credentials"])
@@ -483,58 +486,33 @@ def profile_user():
             return "Error: No id_token in session", 400
         
         try:
+            # Verify the Google OAuth2 token
             id_info = google.oauth2.id_token.verify_oauth2_token(session["credentials"]["id_token"], Request())
+
+            # Extract user information
             user_info = {
                 'name': id_info.get('name'),
                 'email': id_info.get('email'),
-                'picture': id_info.get('picture', DEFAULT_PROFILE_PICTURE)
+                'picture': id_info.get('picture', DEFAULT_PROFILE_PICTURE),
+                'role': 'Admin' if id_info.get('email') in ADMIN_EMAILS else 'User'  # Determine if the user is an admin
             }
-            time.sleep(2)
+
+            # Store user_info in the session
+            session["user_info"] = user_info
         except ValueError:
             return "Error: Invalid ID Token", 400
-    
-    time.sleep(2)
-    return render_template("base.html", user_info=user_info)  # Render user profile page
 
-@app.route("/login/admin")
-def profile_admin():
-    # Check if the user is logged in via Google OAuth
-    if "credentials" not in session or "id_token" not in session["credentials"]:
-        return redirect(url_for("login", role="admin"))  # Redirect to login if credentials are not found
+    # Pass user_info to the template
+    return render_template("dashboard.html", user_info=user_info)
 
-    try:
-        # Verify the ID token using Google OAuth library
-        id_info = google.oauth2.id_token.verify_oauth2_token(session["credentials"]["id_token"], Request())
-        
-        # Get the email from the ID token
-        email = id_info.get("email")
-        print(f"Logged in user email: {email}")
-        print(f"Admin Emails: {ADMIN_EMAILS}")
 
-        # Ensure the email is in the admin list
-        if email not in ADMIN_EMAILS:
-            print("User is not an admin, redirecting to unauthorized page.")
-            return redirect(url_for("unauthorized"))  # Redirect to unauthorized page if not admin
 
-        # If the email is in the admin list, construct admin info
-        admin_info = {
-            'name': id_info.get('name'),
-            'email': id_info.get('email'),
-            'picture': id_info.get('picture'),
-            'role': 'Admin'
-        }
-
-        # Proceed with the admin page
-        return render_template("base.html", admin_info=admin_info)
-
-    except ValueError:
-        return "Error: Invalid ID Token", 400
-
-@app.route('/callback')
+@app.route("/callback")
 def callback():
     if "state" not in session or session["state"] != request.args.get("state"):
         return "Error: State mismatch", 400
 
+    # Fetch credentials using the authorization response
     flow.fetch_token(authorization_response=request.url)
     credentials = flow.credentials
     session["credentials"] = {
@@ -546,29 +524,32 @@ def callback():
         "scopes": credentials.scopes,
         "id_token": credentials.id_token
     }
-    
-    # Adding delay to simulate processing time (if needed)
+
+    # Add delay to simulate processing time (if needed)
     time.sleep(4)
 
     try:
+        # Verify the Google ID Token
         id_info = google.oauth2.id_token.verify_oauth2_token(session["credentials"]["id_token"], Request())
+        
+        # Store user information in session
         session["user_info"] = {
             "name": id_info.get("name"),
             "email": id_info.get("email"),
             "picture": id_info.get("picture", DEFAULT_PROFILE_PICTURE)
         }
+
+        # Set role based on email
+        session["user_info"]["role"] = 'Admin' if session["user_info"]["email"] in ADMIN_EMAILS else 'User'
     except ValueError:
         return "Error: Invalid ID Token", 400
 
-    # After successful login, check the role and redirect accordingly
-    user_email = session["user_info"]["email"]
-    
-    if user_email in ADMIN_EMAILS:
-        # Redirect to the admin profile page if the user is an admin
-        return redirect(url_for("profile_admin"))
+    # Redirect to the appropriate profile page based on the role
+    if session["user_info"]["role"] == "Admin":
+        return redirect(url_for("profile"))
     else:
-        # Redirect to the user profile page if it's a normal user
-        return redirect(url_for("profile_user"))
+        return redirect(url_for("profile"))
+
 
 
 
@@ -664,7 +645,7 @@ def FormElements():
         )
 
         # Algoritmanın calistigi yer  
-        fc.window_sliding_technique(2, db_config=db_config)
+        fc.future_forcasting(len(files), db_config=db_config)
 
         flash("Forecast process is completed!")
         flash("Files uploaded successfully!")

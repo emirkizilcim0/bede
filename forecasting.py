@@ -52,8 +52,8 @@ def find_mse(data, predicted_data):
 
 
 def dframe_returner(number_of_input_folders):
-    if number_of_input_folders < 2:
-        raise ValueError("Number of input folders must be at least 2.")
+    if number_of_input_folders < 1:
+        raise ValueError("Number of input folders must be at least 1.")
     else:
         base_path = os.getcwd()
         folder_path = os.path.join(base_path, "uploads")
@@ -92,7 +92,7 @@ def dataframe_completer(df, name_of_the_column_with_NaN):
         return df[name_of_the_column_with_NaN].interpolate(method='polynomial', order=3)
 
 
-def window_sliding_technique(n, db_config: DatabaseConfig):
+def future_forcasting(n, db_config: DatabaseConfig):
     # Load data from multiple Excel files.
     data = dframe_returner(n)  # User will change it.
 
@@ -322,20 +322,3 @@ def sql_table_to_pandas_table(table_name,db_config: DatabaseConfig):
     query = f"SELECT * FROM {table_name}"  # You can modify the query if needed
     df = pd.read_sql(query, con=create_db_engine(db_config))
     return df
-
-
-if __name__ == "__main__":
-    #print("How many data will you put in? ")
-
-    # Konfigürasyon nesnesini bir kere oluştur
-    db_config = DatabaseConfig(
-        username="root",
-        password="Avatar751",
-        host="localhost",
-        database="mydatabase"
-    )
-
-    # The data the user sent.
-
-    window_sliding_technique(5, db_config) # <- Plotting is also inside the function.
-                                # It will read how many data is sent before process. Will make a change here.
