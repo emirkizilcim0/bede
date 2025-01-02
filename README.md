@@ -445,9 +445,5 @@ The application implements comprehensive error handling:
    - Keep login credentials secure
    - Log out after sessions
    - Don't share account access
+  
 
-For further assistance, mails:
-	emirkizilcim@posta.mu.edu.tr
-	berkayyagizeren@posta.mu.edu.tr
-	denizorhunkalender@posta.mu.edu.tr
-	abdullahemreesen@posta.mu.edu.tr
