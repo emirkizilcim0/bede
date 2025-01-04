@@ -610,6 +610,9 @@ def allowed_file(filename):
     return '.' in filename and filename.rstrip().rsplit('.', 1)[1].lower() in ALLOWED_EXTENSIONS
 
 
+import os
+import shutil
+
 @app.route('/form-elements', methods=['GET', 'POST'])
 def FormElements():
     if request.method == 'POST':
@@ -623,6 +626,28 @@ def FormElements():
         if not files:
             flash("No files selected")
             return redirect(request.url)
+
+        # Clear existing files in the forecast_data/ and static/plots/ directories if uploading new data
+        # You can modify this logic if needed (based on user selection)
+        forecast_data_dir = os.path.join(app.config['UPLOAD_FOLDER'])
+        plots_dir = os.path.join(app.config['PLOT_FOLDER'])
+       
+
+        # Delete all files in forecast_data/
+        if os.path.exists("forecasted_data"):
+            for filename in os.listdir("forecasted_data"):
+                file_path = os.path.join("forecasted_data", filename)
+                if os.path.isfile(file_path):
+                    os.remove(file_path)
+                    print(f"Deleted: {file_path}")
+
+        # Delete all files in static/plots/
+        if os.path.exists(plots_dir):
+            for filename in os.listdir(plots_dir):
+                file_path = os.path.join(plots_dir, filename)
+                if os.path.isfile(file_path):
+                    os.remove(file_path)
+                    print(f"Deleted: {file_path}")
 
         # Save uploaded files
         for file in files:
@@ -642,7 +667,7 @@ def FormElements():
             database="mydatabase"
         )
 
-        # Algoritmanın calistigi yer  
+        # Algoritmanın calistigi yer
         fc.future_forcasting(len(files), db_config=db_config)
 
         flash("Forecast process is completed!")
@@ -650,8 +675,6 @@ def FormElements():
         return redirect(url_for('Table'))  # Redirect to table route
 
     return render_template("form_element.html", user_info=session.get("user_info"))
-
-
 
 
 @app.route('/profile')
