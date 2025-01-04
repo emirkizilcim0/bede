@@ -3,5 +3,13 @@
 {% block title %}BEDE-Profile page{% endblock %}
 
 {% block content %}
-    <h1>Profile info here</h1>
+    <div class="profile-container">
+        <div class="profile-card">
+            <h1>Welcome, {{ user_info.name }}!</h1>
+            <div class="profile-info">
+                <p><strong>Email: </strong>{{ user_info.email }}</p>
+                <p><strong>Role: </strong>{{ user_info.role }}</p> <!--Help needed here, dont know how to check if admin or not-->
+            </div>
+        </div>
+    </div>
 {% endblock %}

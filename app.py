@@ -202,7 +202,7 @@ flow = Flow.from_client_secrets_file(
 )
 
 # Default profile picture
-DEFAULT_PROFILE_PICTURE = "/static/assets/default_profile.png"
+DEFAULT_PROFILE_PICTURE = "/static/placehodler.png"
 
 
 @app.route('/')
@@ -317,6 +317,7 @@ def validate_username(username):
 
     letters_in_ascii = string.ascii_letters
     special_chars =  "!#$%&'()*+,-./:;<=>?@['\']^`{|}~" # Except "_".
+    
 
     # Check the length.
     if len(username) < 4:
@@ -332,10 +333,6 @@ def validate_username(username):
     if len(blank_spaces_username) != len(username):
         return False, "The username can not contain blank spaces." 
     
-    # Check if the character contains non-ascii characters.
-    for char in username:
-        if char not in letters_in_ascii:
-            return False, "The username should contain only ASCII letters."
         
     return True, "The username is valid and correct."
 
@@ -451,9 +448,10 @@ def login_user():
         session['user_info'] = {
             'id': user['UserID'],
             'name': user['UserName'],
-            'email': user['EMail']
+            'email': user['EMail'],
+            'role' : 'User'
         }
-
+        
         flash("Login successful!")
         return redirect(url_for('profile'))
         
@@ -761,9 +759,6 @@ def Table():
 def Settings():
     return render_template("settings.html", user_info=session.get("user_info"))
 
-@app.route('/contact')
-def Contact():
-    return render_template("contact.html", user_info=session.get("user_info"))
 
 # Favicon route
 @app.route('/favicon.ico')
@@ -777,4 +772,4 @@ if __name__ == "__main__":
     check_and_create_database()
     app.run("localhost", 5000, debug=True)
 
-             
+
